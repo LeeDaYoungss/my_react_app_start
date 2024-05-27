@@ -5,7 +5,7 @@ class Myheader extends Component{
     console.log(this);
     return (
       <header>
-        <h1 class="logo">{this.props.title}</h1>
+        <h1 className="logo">{this.props.title}</h1>
         <p>{this.props.desc}</p>
       </header>
     );
