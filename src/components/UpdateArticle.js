@@ -1,12 +1,12 @@
 import { Component } from 'react';
 
-class CreateArticle extends Component{
+class UpdateArticle extends Component{
   render(){
-    console.log("CreateArticle 실행");
+    console.log("UpdateArticle 실행");
     return (
       <section>
         <article>
-          <h2>Create Article</h2>
+          <h2>Update Article</h2>
           <form method='post' onSubmit={(e)=>{
             e.preventDefault();
             // debugger; 실행전에 멈춰줘서 과정 확인 가능
@@ -14,11 +14,10 @@ class CreateArticle extends Component{
             this.props.onSubmit(e.target.title.value,e.target.desc.value);
           }}>
             <p>
-              {/* title값을 넣어줌 */}
-              <input type='text' name='title' placeholder='title'/>
+              <input type='text' name='title' placeholder='title' value={this.props.title}/>
             </p>
             <p>
-              <textarea name='desc' placeholder='description'></textarea>
+              <textarea name='desc' placeholder='description'>{this.props.desc}</textarea>
             </p>
             <button type="submit">입력</button>
           </form>
@@ -29,4 +28,4 @@ class CreateArticle extends Component{
 }
 
 // 내보내기
-export default CreateArticle;
+export default UpdateArticle;

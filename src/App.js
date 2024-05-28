@@ -5,6 +5,7 @@ import Mynav from './components/Mynav';
 import ReadArticle from './components/ReadArticle';
 import Controls from './components/Controls';
 import CreateArticle from './components/CreateArticle';
+import UpdateArticle from './components/UpdateArticle';
 
 /*
 function App() {
@@ -20,6 +21,7 @@ function App() {
 class App extends Component{
   constructor(props){
     super(props);
+    this.max_id = 3;
     this.state = {
       mode:'welcome',
       selected_id:2,
@@ -39,9 +41,7 @@ class App extends Component{
     }
   }
 
-  render(){
-    console.log("App 실행");
-
+  getArticles(){
     let _title, _desc, _article = null;
 
     if(this.state.mode === 'welcome'){
@@ -65,9 +65,53 @@ class App extends Component{
         i++;
       }
       _article = <ReadArticle title={_title} desc={_desc}/>
+
     }else if(this.state.mode === 'create'){
-      _article = <CreateArticle/>
+      _article = <CreateArticle onSubmit={(_title, _desc)=>{
+
+        // this.max_id = this.max_id + 1;
+        this.max_id += 1;
+        // push는 전의 값까지 변경함
+        // this.state.menus.push(
+        //   {id:this.max_id, title:_title, desc:_desc}
+        //   )
+        // concat은 업데이트를 해줌
+        // let _menus = this.state.menus.concat({
+        //   id:this.max_id, title:_title, desc:_desc
+        // })
+        let _menus = Array.from(this.state.menus); //[...this.state.menus]와 같음
+        _menus.push({id:this.max_id, title:_title, desc:_desc});
+
+        this.setState({menus:_menus});
+      }} />
+
+    }else if(this.state.mode === 'Update'){
+
+      let i=0;
+
+      while(i<this.state.menus.length){
+
+        let data = this.state.menus[i];
+
+        if(data.id == this.state.selected_id){
+          _title = data.title;
+          _desc = data.desc;
+        }
+        i++;
+      }
+
+      _article = <UpdateArticle title={_title} desc={_desc} onSubmit={(_title, _desc)=>{
+
+        // this.setState({menus:_menus});
+      }} />
     }
+    return _article;
+  }
+
+  render(){
+    console.log("App 실행");
+
+    
     return (
       <div className="App">
         <Myheader title={this.state.subject.title} desc={this.state.subject.desc} onChangePage={(val)=>{
@@ -81,7 +125,7 @@ class App extends Component{
           })
         }}/>
         
-        {_article}
+        {this.getArticles()}
         <hr/>
         <Controls onChangeMode={(value)=>{
           this.setState({
