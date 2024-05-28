@@ -5,6 +5,9 @@ class Controls extends Component {
     console.log("Controls 실행");
     return (
       <ul className='controls'>
+      {
+        (this.props.mode === 'read') ?
+      <>
         <li><a href="" onClick={(e)=>{
           e.preventDefault();
           this.props.onChangeMode('Update');
@@ -13,9 +16,11 @@ class Controls extends Component {
           e.preventDefault();
           this.props.onChangeMode('Delete');
         }}>Delete</a></li>
+      </>:
         <li><button onClick={()=>{
           this.props.onChangeMode('create');
         }}>Create</button></li>
+      }
       </ul>
     )
   }

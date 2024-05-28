@@ -48,7 +48,11 @@ class App extends Component{
 
       _title = this.state.welcome.title;
       _desc = this.state.welcome.desc;
-      _article = <ReadArticle title={_title} desc={_desc}/>
+      _article = <ReadArticle title={_title} desc={_desc} onChangeMode={(value)=>{
+        this.setState({
+          mode:value,
+        })
+      }}/>
 
     }else if(this.state.mode === 'read'){
       let _data = this.getReadArticle();
@@ -77,9 +81,19 @@ class App extends Component{
 
       let _data = this.getReadArticle();
 
-      _article = <UpdateArticle data={_data} onSubmit={(_title, _desc)=>{
+      _article = <UpdateArticle data={_data} onSubmit={(_title, _desc,_id)=>{
+        console.log(_title,_desc);
 
-        // this.setState({menus:_menus});
+        let _menus = Array.from(this.state.menus);
+        _menus.forEach((item,index)=>{
+          if(item.id === _id){
+            _menus[index] = {id:_id, title:_title, desc:_desc}
+          }
+        });
+        this.setState({
+          menus:_menus,
+          mode:'read'
+        });
       }} />
     }
     return _article;
@@ -116,11 +130,36 @@ class App extends Component{
         }}/>
         
         {this.getArticles()}
+
         <hr/>
-        <Controls onChangeMode={(value)=>{
-          this.setState({
-            mode:value,
-          })
+        <Controls mode={this.state.mode} onChangeMode={(value)=>{
+          if(value === 'Delete'){
+            if(window.confirm('정말 삭제할까요?')){
+              let _menus = [...this.state.menus];
+
+              _menus.forEach((item, idx)=>{
+                if(item.id === this.state.selected_id){
+                  _menus.splice(idx,1);
+                }
+              })
+              // let i = 0;
+              // while(i < _menus.length){
+              //   if(_menus[i].id === this.state.selected_id){
+              //     _menus.splice(i,1);
+              //     break;
+              //   }
+              //   i++;
+              // }
+              this.setState({
+                mode:'welcome',
+                menus:_menus
+              });
+            }
+          }else{
+            this.setState({
+              mode:'value'
+            });
+          }
         }}/>
       </div>
     );
