@@ -7,6 +7,7 @@ class UpdateArticle extends Component{
       id:this.props.data.id,
       title:this.props.data.title,
       desc:this.props.data.desc,
+      level:this.props.data.level
     }
   }
   inputFormHander(e){
@@ -25,7 +26,7 @@ class UpdateArticle extends Component{
             e.preventDefault();
             // debugger; 실행전에 멈춰줘서 과정 확인 가능
             console.log(e.target.title.value);
-            this.props.onSubmit(e.target.title.value,e.target.desc.value,this.state.id);
+            this.props.onSubmit(e.target.title.value,e.target.desc.value,this.state.id, e.target.level.value);
           }}>
             <input type='hidden' name='id' value={this.state.id}/>
             <p>
@@ -48,6 +49,11 @@ class UpdateArticle extends Component{
                 this.inputFormHander(e)
               }}
               ></textarea>
+            </p>
+            <p>
+              <input type='number' min='4' name='level' value={this.state.level}                 onChange={e=>{
+                  this.inputFormHander(e)
+                }}/>
             </p>
             <button type="submit">입력</button>
           </form>

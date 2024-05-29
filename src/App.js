@@ -34,9 +34,9 @@ class App extends Component{
         desc:'Welcome to React'
       },
       menus:[
-        {id:1, title:'HTML', desc:'Hypertext markup language'},
-        {id:2, title:'CSS', desc:'CSS is for design'},
-        {id:3, title:'JavaScript', desc:'JavaScript is for interaction'}
+        {id:1, title:'HTML', desc:'Hypertext markup language', level:1},
+        {id:2, title:'CSS', desc:'CSS is for design', level:2},
+        {id:3, title:'JavaScript', desc:'JavaScript is for interaction', level:3}
       ]
     }
   }
@@ -56,10 +56,10 @@ class App extends Component{
 
     }else if(this.state.mode === 'read'){
       let _data = this.getReadArticle();
-      _article = <ReadArticle title={_data.title} desc={_data.desc}/>
+      _article = <ReadArticle title={_data.title} desc={_data.desc} level={_data.level}/>
 
     }else if(this.state.mode === 'create'){
-      _article = <CreateArticle onSubmit={(_title, _desc)=>{
+      _article = <CreateArticle onSubmit={(_title, _desc, _level)=>{
 
         // this.max_id = this.max_id + 1;
         this.max_id += 1;
@@ -72,22 +72,22 @@ class App extends Component{
         //   id:this.max_id, title:_title, desc:_desc
         // })
         let _menus = Array.from(this.state.menus); //[...this.state.menus]와 같음
-        _menus.push({id:this.max_id, title:_title, desc:_desc});
+        _menus.push({id:this.max_id, title:_title, desc:_desc, level:_level});
 
-        this.setState({menus:_menus});
+        this.setState({menus:_menus, mode:'read', selected_id:this.max_id});
       }} />
 
     }else if(this.state.mode === 'Update'){
 
       let _data = this.getReadArticle();
 
-      _article = <UpdateArticle data={_data} onSubmit={(_title, _desc,_id)=>{
+      _article = <UpdateArticle data={_data} onSubmit={(_title, _desc,_id, _level)=>{
         console.log(_title,_desc);
 
         let _menus = Array.from(this.state.menus);
         _menus.forEach((item,index)=>{
           if(item.id === _id){
-            _menus[index] = {id:_id, title:_title, desc:_desc}
+            _menus[index] = {id:_id, title:_title, desc:_desc, level:_level}
           }
         });
         this.setState({
@@ -157,7 +157,7 @@ class App extends Component{
             }
           }else{
             this.setState({
-              mode:'value'
+              mode:value
             });
           }
         }}/>

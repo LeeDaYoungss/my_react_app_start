@@ -11,14 +11,16 @@ class CreateArticle extends Component{
             e.preventDefault();
             // debugger; 실행전에 멈춰줘서 과정 확인 가능
             console.log(e.target.title.value);
-            this.props.onSubmit(e.target.title.value,e.target.desc.value);
+            this.props.onSubmit(e.target.title.value, e.target.desc.value, e.target.level.value);
           }}>
             <p>
-              {/* title값을 넣어줌 */}
               <input type='text' name='title' placeholder='title'/>
             </p>
             <p>
               <textarea name='desc' placeholder='description'></textarea>
+            </p>
+            <p>
+              <input type='number' min='4' name='level'/>
             </p>
             <button type="submit">입력</button>
           </form>
